@@ -1,0 +1,24 @@
+services:
+  flagbit.category.data_transformer.denormalization.default:
+    class: 'Flagbit\Bundle\CategoryBundle\Transformer\Denormalization\DefaultTransformer'
+    tags:
+      - name: 'flagbit.category.data_transformer.denormalization'
+        type: 'default'
+
+  flagbit.category.data_transformer.normalization.default:
+    class: 'Flagbit\Bundle\CategoryBundle\Transformer\Normalization\DefaultTransformer'
+    tags:
+      - name: 'flagbit.category.data_transformer.normalization'
+        type: 'default'
+
+  flagbit.category.data_transformer.normalization.checkbox:
+    class: 'Flagbit\Bundle\CategoryBundle\Transformer\Normalization\BooleanTransformer'
+    tags:
+      - name: 'flagbit.category.data_transformer.normalization'
+        type: 'checkbox'
+
+  flagbit.category.data_transformer.denormalization.checkbox:
+    class: 'Flagbit\Bundle\CategoryBundle\Transformer\Denormalization\BooleanTransformer'
+    tags:
+      - name: 'flagbit.category.data_transformer.denormalization'
+        type: 'checkbox'

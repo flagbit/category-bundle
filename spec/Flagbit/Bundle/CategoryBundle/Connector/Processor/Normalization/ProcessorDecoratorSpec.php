@@ -11,6 +11,7 @@ use Flagbit\Bundle\CategoryBundle\Connector\ArrayConverter\StandardToFlat\Catego
 use Flagbit\Bundle\CategoryBundle\Connector\Processor\Normalization\ProcessorDecorator;
 use Flagbit\Bundle\CategoryBundle\Entity\CategoryProperty;
 use Flagbit\Bundle\CategoryBundle\Repository\CategoryPropertyRepository;
+use Flagbit\Bundle\CategoryBundle\Transformer\NormalizationTransformerManager;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
@@ -22,9 +23,10 @@ class ProcessorDecoratorSpec extends ObjectBehavior
     public function let(
         CategoryPropertyRepository $categoryPropertyRepository,
         StandardToFlatConverter $standardToFlat,
-        Processor $baseProcessor
+        Processor $baseProcessor,
+        NormalizationTransformerManager $transformerManager
     ): void {
-        $this->beConstructedWith($categoryPropertyRepository, $standardToFlat, $baseProcessor);
+        $this->beConstructedWith($categoryPropertyRepository, $standardToFlat, $baseProcessor, $transformerManager);
     }
 
     public function it_is_initializable(): void
@@ -70,11 +72,16 @@ class ProcessorDecoratorSpec extends ObjectBehavior
         CategoryProperty $categoryProperty,
         CategoryPropertyRepository $categoryPropertyRepository,
         StandardToFlatConverter $standardToFlat,
-        Processor $baseProcessor
+        Processor $baseProcessor,
+        NormalizationTransformerManager $transformerManager
     ): void {
         $categoryPropertyRepository->findByCategory($item)->willReturn($categoryProperty);
 
         $categoryProperty->getProperties()->willReturn([]);
+
+        $transformerManager->transformOnNormalized([])
+            ->shouldNotHaveBeenCalled()
+            ->willReturn([]);
 
         $standardToFlat->convert([])->willReturn(['some' => 'data']);
 
